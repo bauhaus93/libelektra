@@ -13,7 +13,7 @@ public interface Elektra extends Library {
 	/**
 	 * Overall native binding to the elektra library
 	 */
-	Elektra INSTANCE = (Elektra) Native.loadLibrary("elektra", Elektra.class);
+	Elektra INSTANCE = (Elektra) Native.loadLibrary("elektra-kdb", Elektra.class);
 
 	/**************************************
 	 *
@@ -77,7 +77,7 @@ public interface Elektra extends Library {
 
 	int keyIsBelowOrSame(Pointer key, Pointer check);
 
-	int keyIsDirectBelow(Pointer key, Pointer check);
+	int keyIsDirectlyBelow(Pointer key, Pointer check);
 
 	int keyIsInactive(Pointer key);
 

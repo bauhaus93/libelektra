@@ -128,6 +128,9 @@ The text below summarizes updates to the [C (and C++)-based libraries](https://w
 
 ### Compatibility
 
+- The library `libelektra`, which is a collection of different elektra libraries, is now removed.
+  Users of CMake or pkg-config should not be affected. Otherwise change `-lelektra` to `-lelektra-core -lelektra-kdb`
+  or whatever parts of Elektra your application uses. _(Markus Raab)_
 - The conversion functions `elektraKeyTo*` and `elektra*ToString` are now part of the `elektra-ease` library instead of
   the `elektra-highlevel` library. This should not cause any breaking changes since `elektra-highlevel` already depends
   on `elektra-ease`. In addition the header `elektra/conversion.h` is kept for compatibility. _(Klemens Böswirth)_
@@ -138,6 +141,7 @@ The text below summarizes updates to the [C (and C++)-based libraries](https://w
 - `kdbconfig.h` is no longer included in the installed headers. This is because it could cause conflicts with other
   `config.h`-type headers from applications. _(Klemens Böswirth)_
 - `ksAppendKey`: state that it only fail on memory problems. _(Markus Raab)_
+- `keyIsDirectBelow` was renamed to `keyIsDirectlyBelow`. _(Philipp Gackstatter)_
 
 ### Opts
 
@@ -167,7 +171,7 @@ Bindings allow you to utilize Elektra using [various programming languages](http
 you up to date with the multi-language support provided by Elektra.
 
 - Warnings about cmake policies are avoided. _(Markus Raab)_
-- We removed the haskell binding. _(Markus Raab)_
+- We removed the haskell and GI bindings. _(Markus Raab)_
 
 ### Java
 
@@ -187,13 +191,21 @@ you up to date with the multi-language support provided by Elektra.
 ## Tools
 
 - kdb can call [cmerge](../help/kdb-cmerge.md) and specify a [strategy](../help/elektra-cmerge-strategy.md) to resolve conflicts. _(Dominic Jäger)_
-- Checks for `kdbCommit` have been added to [kdb check](../help/kdb-check.md). _(Vid Leskovar)_
+- Checks for `kdbCommit` have been added to [kdb plugin-check](../help/kdb-plugin-check.md). _(Vid Leskovar)_
 - add PID file config setting for kdb-run-rest-frontend _(Markus Raab)_
-- Added `kdb showmeta` command which prints out all metadata along with its values for a given key. _(Michael Zronek)_
+- Added `kdb meta-show` command which prints out all metadata along with its values for a given key. _(Michael Zronek)_
+- Renamed kdb plugin commands following a hierarchical structure. `kdb info` is now `kdb plugin-info`, `kdb check` is now `kdb plugin-check` and `kdb list` is now `kdb plugin-list`. We also removed the obsolete `kdb fstab` functionality. _(Philipp Gackstatter)_
+- Renamed kdb meta commands:
+  - `kdb getmeta` is now `kdb meta-get`
+  - `kdb lsmeta` is now `kdb meta-ls`
+  - `kdb showmeta` is now `kdb meta-show`
+  - `kdb rmmeta` is now `kdb meta-rm`
+  - `kdb setmeta` is now `kdb meta-set` _(Philipp Gackstatter)_
 - <<TODO>>
 
 ## Scripts
 
+- We structured the [scripts](/scripts). _(Markus Raab)_
 - Removed the scripts
 
   - `scripts/elektra-merge`,
@@ -223,6 +235,7 @@ you up to date with the multi-language support provided by Elektra.
 - Added a tutorial on how to write language bindings. Visit our new [README](../tutorials/language-bindings.md).
   _(Michael Zronek, Raphael Gruber, Philipp Gackstatter)_
 - A [second tutorial](../tutorials/highlevel-bindings.md) on writing bindings for the high-level API was created as well. _(Klemens Böswirth, Raphael Gruber)_
+- Added [info](../../src/plugins/xerces/README.md) on how to include xerces plugin with homebrew installation. _(Anton Hößl)_
 - <<TODO>>
 
 ## Tests
@@ -281,7 +294,7 @@ you up to date with the multi-language support provided by Elektra.
 ### Travis
 
 - The build job `🍏 GCC` now uses the [Travis Homebrew addon](https://docs.travis-ci.com/user/installing-dependencies/#installing-packages-on-macos) to install dependencies. _(René Schwaiger)_
-- <<TODO>>
+- We now build and test Elektra on Ubuntu `18.04` (Bionic Beaver) instead of Ubuntu `16.04` (Xenial Xerus). _(René Schwaiger)_
 - <<TODO>>
 - <<TODO>>
 
