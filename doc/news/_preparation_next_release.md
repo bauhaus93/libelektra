@@ -65,6 +65,8 @@ The following section lists news about the [modules](https://www.libelektra.org/
   - `struct`. _(Markus Raab, René Schwaiger)_
 - We unified the name of the config check function of the plugins to `nameOfPluginCheckConf`. Before this update some plugins used the name `nameOfPluginCheckConfig` instead. _(René Schwaiger)_
 - Fixed some typos and links in the documentation and add new iterate example. _(Philipp Gackstatter)_
+- We removed `keyRel` and `keyRel2` since it can be easily replaced by other existing functions. _(Philipp Gackstatter)_
+- We improved the error messages in `crypto`, `fcrypt`, and `gpgme` plugins. _(Peter Nirschl)_
 
 ### Camel
 
@@ -112,6 +114,8 @@ plugins. _(René Schwaiger)_
 ### Specload
 
 - We now treat relative paths as relative to `KDB_DB_SPEC` instead of the current working directory. _(Klemens Böswirth)_
+- Changes to `default` or `type` metadata are no longer supported, since they are not safe in every case. _(Klemens Böswirth)_
+- The plugin no longer has the `experimental` status. _(Klemens Böswirth)_
 
 ### Spec
 
@@ -134,6 +138,7 @@ The text below summarizes updates to the [C (and C++)-based libraries](https://w
 - The conversion functions `elektraKeyTo*` and `elektra*ToString` are now part of the `elektra-ease` library instead of
   the `elektra-highlevel` library. This should not cause any breaking changes since `elektra-highlevel` already depends
   on `elektra-ease`. In addition the header `elektra/conversion.h` is kept for compatibility. _(Klemens Böswirth)_
+- Fixes in documentation that might disallow some code operating in grey areas before. _(Markus Raab)_
 
 ### Core
 
@@ -146,6 +151,15 @@ The text below summarizes updates to the [C (and C++)-based libraries](https://w
 ### Opts
 
 - The option `-h` is no longer used to indicate help mode. Only `--help`, will invoke help mode. _(Klemens Böswirth)_
+
+### Proposal
+
+- Removed or moved several functions of `kdbproposal.h`:
+  - `elektraKsToMemArray` was moved to `kdbease.h`,
+  - `elektraLookupOptions` was moved to `kdbprivate.h`,
+  - `keySetStringF` was moved to `kdbinternal.h`,
+  - `keyLock` and `elektraLockOptions` was moved to `kdbprivate.h`,
+  - Removed `ksPrev` and `elektraKsPrev`. _(Philipp Gackstatter)_
 
 ### <<Library1>>
 
@@ -194,13 +208,15 @@ you up to date with the multi-language support provided by Elektra.
 - Checks for `kdbCommit` have been added to [kdb plugin-check](../help/kdb-plugin-check.md). _(Vid Leskovar)_
 - add PID file config setting for kdb-run-rest-frontend _(Markus Raab)_
 - Added `kdb meta-show` command which prints out all metadata along with its values for a given key. _(Michael Zronek)_
-- Renamed kdb plugin commands following a hierarchical structure. `kdb info` is now `kdb plugin-info`, `kdb check` is now `kdb plugin-check` and `kdb list` is now `kdb plugin-list`. We also removed the obsolete `kdb fstab` functionality. _(Philipp Gackstatter)_
+- Renamed kdb plugin commands following a hierarchical structure. `kdb info` is now `kdb plugin-info`, `kdb check` is now `kdb plugin-check` and `kdb list` is now `kdb plugin-list`. We also removed the obsolete `kdb fstab`. _(Philipp Gackstatter)_
 - Renamed kdb meta commands:
   - `kdb getmeta` is now `kdb meta-get`
   - `kdb lsmeta` is now `kdb meta-ls`
   - `kdb showmeta` is now `kdb meta-show`
   - `kdb rmmeta` is now `kdb meta-rm`
   - `kdb setmeta` is now `kdb meta-set` _(Philipp Gackstatter)_
+- Fix test tool `gen-gpg-testkey` by giving a narrower GPG key description. Fixes mismatches with existing GPG keys that contain "elektra.org" as e-mail address. _(Peter Nirschl)_
+- `kdb list-commands` and `kdb plugins-list` now sort their output in an alphabetical order _(Anton Hößl)_
 - <<TODO>>
 
 ## Scripts
@@ -236,7 +252,9 @@ you up to date with the multi-language support provided by Elektra.
   _(Michael Zronek, Raphael Gruber, Philipp Gackstatter)_
 - A [second tutorial](../tutorials/highlevel-bindings.md) on writing bindings for the high-level API was created as well. _(Klemens Böswirth, Raphael Gruber)_
 - Added [info](../../src/plugins/xerces/README.md) on how to include xerces plugin with homebrew installation. _(Anton Hößl)_
-- <<TODO>>
+- We updated links for the INI parsing library Nickel. _(René Schwaiger)_
+- We removed links to old and disabled Jenkins build jobs. _(René Schwaiger)_
+- The [compile instructions](../COMPILE.md) do not assume that you use `make` to build Elektra anymore. _(René Schwaiger)_
 
 ## Tests
 
@@ -260,6 +278,7 @@ you up to date with the multi-language support provided by Elektra.
 
 ### Docker
 
+- Added [Dockerfile for Ubuntu Bionic](../../scripts/docker/ubuntu/bionic/Dockerfile) _(Djordje Bulatovic)_
 - <<TODO>>
 - <<TODO>>
 - <<TODO>>
@@ -275,7 +294,7 @@ you up to date with the multi-language support provided by Elektra.
 
 - The `🔗 Check` build job now merges PRs before checking links. _(Klemens Böswirth)_
 - We enabled logging in the build job `🍎 Clang`. This update makes sure that Elektra’s logging code compiles without warnings on macOS. _(René Schwaiger)_
-- <<TODO>>
+- All macOS build jobs now use Xcode `11.1` instead of Xcode `10.1`. _(René Schwaiger)_
 
 ### Jenkins
 
@@ -319,6 +338,15 @@ We are currently working on following topics:
 ## Statistics
 
 <<`scripts/git-release-stats 0.9.VER-1 0.9.<<VERSION>>`>>
+
+## Finished Thesis
+
+- [Klemens Böswirth](https://www.libelektra.org/ftp/elektra/publications/boeswirth2019highlevel.pdf):
+  We explore the feasibility of using Elektra in a real-world project. We focused especially on using
+  the high-level API with code-generation. In the thesis, we implemented new versions of LCDproc, one
+  with the low-level API and one with the high-level API. Then we did some benchmarks to compare them.
+  Our results indicate, that Elektra is very much usable in real-world projects. However, we also found
+  that there is still potential for further optimizations.
 
 ## Join the Initiative!
 

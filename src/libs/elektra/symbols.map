@@ -82,7 +82,6 @@ libelektra_0.8 {
 	keyNeedSync;
 	keyNew;
 	keyNextMeta;
-	keyRel;
 	keyRewindMeta;
 	keySetBaseName;
 	keySetBinary;
@@ -143,7 +142,6 @@ libelektraprivate_1.0 {
 	elektraGlobalSet;
 	elektraKeyLock;
 	elektraKsPopAtCursor;
-	elektraKsPrev;
 	elektraRenameKeys;
 	elektraUnescapeKeyName;
 	elektraUnescapeKeyNamePart;
