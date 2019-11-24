@@ -13,7 +13,6 @@
 #include <kdbprivate.h>
 #include <kdbproposal.h>
 #include <kdbtypes.h>
-#include <kdbassert.h>
 
 #ifdef HAVE_STDIO_H
 #include <stdio.h>
@@ -881,26 +880,22 @@ int elektraKeyCmpOrder (const Key * ka, const Key * kb)
 
 	if (!ka && kb) return -1;
 
-	int aorder = -1;
-	int border = -1;
-
 	const Key * kam = keyGetMeta (ka, "order");
 	const Key * kbm = keyGetMeta (kb, "order");
 
-	if (kam) aorder = atoi (keyString (kam));
-	if (kbm) border = atoi (keyString (kbm));
-
-	if (aorder >= 0 && border >= 0) return aorder - border;
-
-	if (aorder < 0 && border < 0) return 0;
-
-	if (aorder < 0 && border >= 0) return -1;
-
-	if (aorder >= 0 && border < 0) return 1;
-
-	ELEKTRA_ASSERT(0, "Unreachable");
-	/* cannot happen anyway */
-	return 0;
+	if (kam == NULL && kbm == NULL)
+	{
+		return 0;
+	}
+	if (kam == NULL && kbm != NULL)
+	{
+		return -1;
+	}
+	if (kam != NULL && kbm == NULL)
+	{
+		return 1;
+	}
+	return atoi (keyString (kam)) - atoi (keyString(kbm));
 }
 
 
