@@ -8,6 +8,7 @@ RUN apt-get update && apt-get -y install \
         cmake \
         curl \
         ed \
+        flex \
         git \
         libantlr4-runtime-dev \
         libyajl-dev \

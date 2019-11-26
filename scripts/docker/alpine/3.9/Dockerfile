@@ -7,6 +7,7 @@ RUN apk update \
         cmake \
         curl \
         file \
+        flex \
         git \
         ninja \
         yaml-cpp-dev
