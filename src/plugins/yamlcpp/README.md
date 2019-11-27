@@ -1,7 +1,7 @@
 - infos = Information about the yamlcpp plugin is in keys below
 - infos/author = René Schwaiger <sanssecours@me.com>
 - infos/licence = BSD
-- infos/needs = base64 directoryvalue
+- infos/needs =
 - infos/provides = storage/yaml
 - infos/recommends =
 - infos/placements = getstorage setstorage
