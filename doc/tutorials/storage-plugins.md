@@ -230,6 +230,27 @@ kdb rm -r user/tests/storage
 sudo kdb umount user/tests/storage
 ```
 
+## Comments
+
+Comments existing in a file should be preserved with the help of the `comment/#` metakey. Each comment line is stored as an array element of that metakey. The metakeys should be assigned to the next read key (with an exception for file-ending comments).
+The top-most comment has the index #1, while the comment directly above the key has the highest index in the comment array.
+Inline comments (comments in the same line as the key) are stored with an index of #0.
+
+The content of a comment line is directly saved in the value of the array element.
+Additionally, each array element should also have two subkeys: `start` and `space`.
+In the `start` metakey, the character(s) to start the comment are saved. If `start` is left empty, the line is considered to be an empty line.
+The `space` metakey stores the amount of spaces before the comment starts (TODO: METADATA.ini states that it stores amount of space and tabs. But how can this be differentiated?).
+
+Suppose we have a file config.yaml, containing the following comments and key/value pairs:
+```yaml
+# Comment for some_key with index 1
+# Comment for some_key with index 2
+# Comment for some_key with index 3
+some_key: 12345    # Inline Comment of some_key, has index 0
+# Comment for other_key with index 1
+other_key: 0 # Inline Comment of other_key, has index 0
+```
+
 .
 
 <!--
