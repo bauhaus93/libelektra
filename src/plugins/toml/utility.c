@@ -424,3 +424,4 @@ bool isValidEscapeSequence (const char * seq)
 	{
 		return false;
 	}
+}
