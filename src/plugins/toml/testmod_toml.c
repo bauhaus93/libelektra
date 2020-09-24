@@ -1450,7 +1450,7 @@ static void setComment (Key * key, const char * comment, const char * start, siz
 
 static bool compareFilesIgnoreWhitespace (const char * filenameA, const char * filenameB)
 {
-	const int LINE_SIZE = 512;
+#define LINE_SIZE 512
 	const char * WHITELIST_CHARS = " \t\"'";
 	FILE * fA = fopen (filenameA, "r");
 	FILE * fB = fopen (filenameB, "r");
@@ -1515,4 +1515,5 @@ static bool compareFilesIgnoreWhitespace (const char * filenameA, const char * f
 			ptrB++;
 		}
 	}
+#undef LINE_SIZE
 }
