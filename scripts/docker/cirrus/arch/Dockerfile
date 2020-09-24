@@ -2,11 +2,13 @@ FROM archlinux/base
 
 RUN pacman -Sy --noconfirm \
     base-devel \
+    bison \
     boost \
     cmake \
     diffutils \
     discount \
     doxygen \
+    flex \
     git \
     go \
     graphviz \
