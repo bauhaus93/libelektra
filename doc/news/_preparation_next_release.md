@@ -56,6 +56,8 @@ The following section lists news about the [modules](https://www.libelektra.org/
 - Added the TOML plugin, which can read and write TOML files using flex and bison. _(Jakob Fischer)_
 - Removed the `null` plugin dependency of the plugin. _(Jakob Fischer)_
 - The `type` metakey is now set for numbers on reading. _(Jakob Fischer)_
+- Rewrote some error messages, to make them less technical. _(Jakob Fischer)_
+- Fixed parsing of floats/empty keynames/multiline strings. _(Jakob Fischer)_
 
 ### <<Plugin3>>
 
