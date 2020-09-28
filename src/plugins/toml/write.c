@@ -25,6 +25,7 @@
 #include "type.h"
 #include "utility.h"
 #include "write.h"
+#include "integer.h"
 
 typedef enum
 {
@@ -429,7 +430,7 @@ static int writeScalar (Key * key, Writer * writer)
 	{
 		result |= writeQuoted (valueStr, '"', isMultilineString (valueStr) ? 3 : 1, writer);
 	}
-	else if (isNumber (writer->checker, valueStr) || isDateTime (writer->checker, valueStr))
+	else if (isFloat (writer->checker, valueStr) || isValidIntegerAnyBase(valueStr) || isDateTime (writer->checker, valueStr))
 	{
 		result |= fputs (valueStr, writer->f) == EOF;
 	}
