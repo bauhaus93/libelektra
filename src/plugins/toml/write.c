@@ -491,7 +491,7 @@ static int writeMetakeys (Key * key, Writer * writer)
 	const Key * meta;
 	while ((meta = keyNextMeta (key)) != NULL)
 	{
-		if (shouldWriteMetakey (keyName (meta)))
+		if (shouldWriteMetakey (meta))
 		{
 			result |= writeMetakeyAsComment (meta, writer->f);
 		}
