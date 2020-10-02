@@ -95,6 +95,22 @@
 			keySetMeta (lastKey, "binary", NULL);                                                                              \
 		}                                                                                                                          \
 	}
+
+#define SET_META(name, value)                                                                                                              \
+	{                                                                                                                                  \
+		if (lastKey != NULL)                                                                                                       \
+		{                                                                                                                          \
+			keySetMeta (lastKey, name, value);                                                                                 \
+		}                                                                                                                          \
+	}
+
+#define CLEAR_META(name)                                                                                                                   \
+	{                                                                                                                                  \
+		if (lastKey != NULL)                                                                                                       \
+		{                                                                                                                          \
+			keySetMeta (lastKey, name, NULL);                                                                                  \
+		}                                                                                                                          \
+	}
 #define SET_ORDER(order)                                                                                                                   \
 	{                                                                                                                                  \
 		if (lastKey != NULL) setOrderForKey (lastKey, order);                                                                      \
@@ -151,6 +167,8 @@ static void testWriteReadComments (void);
 static void testWriteReadCommentsArray (void);
 static void testWriteReadOrderTableNonTable (void);
 static void testWriteReadNull (void);
+static void testWriteReadMetakeysBasic (void);
+static void testWriteReadMetakeysInArrays (void);
 // static void testWriteReadBase64(void);
 static void printError (Key * parent);
 static Key * addKey (KeySet * ks, const char * name, const char * value, size_t size, const char * orig, const char * type,
@@ -298,6 +316,8 @@ static void testWriteRead (void)
 	testWriteReadInlineTableInArray ();
 	testWriteReadArrayInlineTableAlternating ();
 	testWriteReadOrderTableNonTable ();
+	testWriteReadMetakeysBasic ();
+	testWriteReadMetakeysInArrays ();
 }
 
 static void testWriteReadEmptyKeyName (void)
@@ -1213,7 +1233,7 @@ static void testWriteReadCommentsArray (void)
 
 	WRITE_KEY ("array");
 	SET_ORDER (0);
-	SET_ARRAY ("#2");
+	SET_ARRAY ("#3");
 	SET_INLINE_COMMENT ("array inline comment", 1);
 	DUP_EXPECTED;
 
@@ -1231,7 +1251,57 @@ static void testWriteReadCommentsArray (void)
 
 	WRITE_KV ("array/#2", "2");
 	SET_COMMENT (1, "element 3 comment", 4);
-	SET_INLINE_COMMENT ("element 3 inline", 4);
+	DUP_EXPECTED;
+	SET_EMPTY_LINE (0); // This newline is because the next array element has a comment in front of it
+	SET_TYPE ("long_long");
+
+
+	WRITE_KV ("array/#3", "3");
+	SET_COMMENT (1, "element 4 comment", 4);
+	DUP_EXPECTED;
+	SET_TYPE ("long_long");
+
+	TEST_WR_FOOT;
+}
+
+static void testWriteReadMetakeysBasic (void)
+{
+	TEST_WR_HEAD;
+
+	WRITE_KV ("some_key", "0");
+	SET_META ("custom_metakey", "custom_metakey_value");
+	SET_META ("another_custom_metakey", "another_custom_metakey_value");
+	DUP_EXPECTED;
+	SET_ORDER (0);
+	SET_TYPE ("long_long");
+
+	TEST_WR_FOOT;
+}
+
+static void testWriteReadMetakeysInArrays (void)
+{
+	TEST_WR_HEAD;
+
+	WRITE_KEY ("array");
+	SET_ORDER (0);
+	SET_ARRAY ("#2");
+	SET_META ("custom_array_meta", "custom_array_meta_value");
+	DUP_EXPECTED;
+
+	WRITE_KV ("array/#0", "0");
+	SET_META ("custom_meta", "custom_meta_value");
+	DUP_EXPECTED;
+	SET_EMPTY_LINE (0);
+	SET_TYPE ("long_long");
+
+	WRITE_KV ("array/#1", "1");
+	SET_META ("custom_meta", "custom_meta_value");
+	DUP_EXPECTED;
+	SET_EMPTY_LINE (0);
+	SET_TYPE ("long_long");
+
+	WRITE_KV ("array/#2", "2");
+	SET_META ("custom_meta", "custom_meta_value");
 	DUP_EXPECTED;
 	SET_TYPE ("long_long");
 
